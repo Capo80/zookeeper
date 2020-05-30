@@ -63,6 +63,7 @@
     <module>zookeeper-metrics-providers</module>
     <module>zookeeper-client</module>
     <module>zookeeper-recipes</module>
+    <module>tests_aggregate</module>
     <module>zookeeper-assembly</module>
   </modules>
 
