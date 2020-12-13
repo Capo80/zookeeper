@@ -377,7 +377,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         committedPkts.add(pkt);
         pktsSize += LearnerHandler.packetSize(pkt);
         // remove 5 packets for every one added as we near the size limit
-        for (int i = 0; pktsSize > && i < 5; i++) {
+        for (int i = 0; pktsSize > pktsSizeLimit * 0.8 && i < 5; i++) {
             QuorumPacket oldPkt = committedPkts.poll();
             if (oldPkt == null) {
                 pktsSize = 0;
