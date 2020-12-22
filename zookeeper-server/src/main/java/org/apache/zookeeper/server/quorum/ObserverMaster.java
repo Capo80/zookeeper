@@ -144,7 +144,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         }
     };
 
-    ObserverMaster(QuorumPeer self, FollowerZooKeeperServer zks, int port) {
+    public ObserverMaster(QuorumPeer self, FollowerZooKeeperServer zks, int port) {
         this.self = self;
         this.zks = zks;
         this.port = port;
@@ -373,7 +373,10 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         return pkt;
     }
 
-    private synchronized void cacheCommittedPacket(final QuorumPacket pkt) {
+    public ConcurrentLinkedQueue<QuorumPacket> getCommittedPkts() {
+        return committedPkts;
+    }
+    public synchronized void cacheCommittedPacket(final QuorumPacket pkt) {
         committedPkts.add(pkt);
         pktsSize += LearnerHandler.packetSize(pkt);
         // remove 5 packets for every one added as we near the size limit
@@ -497,7 +500,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         }
     }
 
-    int getNumActiveObservers() {
+    public int getNumActiveObservers() {
         return activeObservers.size();
     }
 

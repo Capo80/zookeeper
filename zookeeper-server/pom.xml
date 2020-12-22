@@ -31,10 +31,6 @@
   <name>Apache ZooKeeper - Server</name>
   <description>ZooKeeper server</description>
 
-  <!-- Sonar Cloud aggregate folder -->
-  <properties>
-    <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
