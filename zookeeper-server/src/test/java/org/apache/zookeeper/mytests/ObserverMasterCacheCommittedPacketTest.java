@@ -62,14 +62,23 @@ public class ObserverMasterCacheCommittedPacketTest {
         //function signature
         //void cacheCommittedPacket(final QuorumPacket pkt)
 
+        //some auth info - not relevant to the test
         Id dummyId = new Id("dummy", "dummy");
         List<Id> dummyAuthInfo = new ArrayList<Id>();
         dummyAuthInfo.add(dummyId);
 
+        //filling the byte arrays with dummy data
+        byte[] almostOverSizedArray = new byte[(pktSizeLimit/2)-((int)(pktSizeLimit*0.15))];
+        byte[] overSizedArray = new byte[pktSizeLimit/2 + ((int)(pktSizeLimit*0.15))];
+        byte[] reallyOverSizedArray = new byte[pktSizeLimit*2];
+        Arrays.fill( almostOverSizedArray, (byte) 1 );
+        Arrays.fill( overSizedArray, (byte) 1 );
+        Arrays.fill( reallyOverSizedArray, (byte) 1 );
+
         QuorumPacket undersizedPkt = new QuorumPacket(0, 1234, "dummy".getBytes(), dummyAuthInfo);
-        QuorumPacket almostOverSizedPkt = new QuorumPacket(0, 1234, new byte[(pktSizeLimit/2)-((int)(pktSizeLimit*0.15))], dummyAuthInfo);
-        QuorumPacket overSizedPkt = new QuorumPacket(0, 1234, new byte[pktSizeLimit/2 + ((int)(pktSizeLimit*0.15))], dummyAuthInfo);
-        QuorumPacket reallyOverSizedPkt = new QuorumPacket(0, 1234, new byte[pktSizeLimit*2], dummyAuthInfo);
+        QuorumPacket almostOverSizedPkt = new QuorumPacket(0, 1234, almostOverSizedArray, dummyAuthInfo);
+        QuorumPacket overSizedPkt = new QuorumPacket(0, 1234, overSizedArray, dummyAuthInfo);
+        QuorumPacket reallyOverSizedPkt = new QuorumPacket(0, 1234, reallyOverSizedArray, dummyAuthInfo);
 
         return Arrays.asList(new Object[][]{
 
