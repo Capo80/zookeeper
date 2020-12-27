@@ -29,7 +29,7 @@ public class Utils {
         Socket[] pair = getSocketPair();
         Socket leaderSocket = pair[0];
         Socket followerSocket = pair[1];
-        File tmpDir = File.createTempFile("test", "dir", testData);
+        File tmpDir = File.createTempFile("/test", "dir", testData);
         tmpDir.delete();
         tmpDir.mkdir();
         QuorumPeer qp = ZabUtils.createQuorumPeer(tmpDir);
