@@ -35,7 +35,7 @@ public class ObserverMasterStartForwardingTest {
     private boolean queuePkt;
 
     public ObserverMasterStartForwardingTest(long expResult, LearnerHandler lh, long lastSeenZxid, boolean queuePkt) {
-        //the arguments of the contructor are not used in the method we are testing
+        //the arguments of the constructor are not used in the method we are testing
         //we can leave them as null
         obsM = new ObserverMaster(null, null, 80);
 
@@ -61,10 +61,7 @@ public class ObserverMasterStartForwardingTest {
     @Parameterized.Parameters
     public static Collection<?> getTestParameters() throws NoSuchFieldException, X509Exception, IllegalAccessException, IOException {
         //function signature
-        //void long startForwarding(LearnerHandler learnerHandler, long lastSeenZxid)
-
-        //unidimensional testing
-        //some auth info - not relevant to the test
+        //long startForwarding(LearnerHandler learnerHandler, long lastSeenZxid)
 
         LearnerHandler validLh = Utils.createValidLearner();
 

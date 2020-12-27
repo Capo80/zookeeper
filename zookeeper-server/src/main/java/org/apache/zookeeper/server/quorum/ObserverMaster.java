@@ -351,11 +351,11 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         return (self == null) ? null : self.authServer;
     }
 
-    void proposalReceived(QuorumPacket qp) {
+    public void proposalReceived(QuorumPacket qp) {
         proposedPkts.add(new QuorumPacket(Leader.INFORM, qp.getZxid(), qp.getData(), null));
     }
 
-    private synchronized QuorumPacket removeProposedPacket(long zxid) {
+    public synchronized QuorumPacket removeProposedPacket(long zxid) {
         QuorumPacket pkt = proposedPkts.peek();
         if (pkt == null || pkt.getZxid() > zxid) {
             LOG.debug("ignore missing proposal packet for {}", Long.toHexString(zxid));
@@ -364,7 +364,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
         if (pkt.getZxid() != zxid) {
             final String m = String.format(
                 "Unexpected proposal packet on commit ack, expected zxid 0x%d got zxid 0x%d",
-                zxid,
+                zxid,  //bug
                 pkt.getZxid());
             LOG.error(m);
             throw new RuntimeException(m);
