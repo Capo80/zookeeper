@@ -85,6 +85,7 @@ public class ObserverMasterRemoveProposedPacketTest {
             Assert.assertEquals(e.getMessage(), "Unexpected proposal packet on commit ack, expected zxid 0x"+(FIRST_PKT_ID+1)+" got zxid 0x" + FIRST_PKT_ID);
             return;
         }
+
         Assert.assertTrue((!expResult && result == null) || (expResult && Arrays.equals(result.getData(), remQp.getData())));
 
     }
