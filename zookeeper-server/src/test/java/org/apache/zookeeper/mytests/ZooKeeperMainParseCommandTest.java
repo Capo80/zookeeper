@@ -13,52 +13,53 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(value = Parameterized.class)
-public class ZooKeeperMainParseOptionsTest {
+public class ZooKeeperMainParseCommandTest {
 
     //arguments
     private boolean expResult;
-    private String[] args;
+    private String cmdstring;
 
-    public ZooKeeperMainParseOptionsTest(boolean expResult, String[] args) {
+    public ZooKeeperMainParseCommandTest(boolean expResult, String cmdstring) {
         this.expResult = expResult;
-        this.args = args;
+        this.cmdstring = cmdstring;
     }
 
     @Parameterized.Parameters
     public static Collection<?> getTestParameters() throws NoSuchFieldException, X509Exception, IllegalAccessException, IOException {
         //function signature
-        //boolean parseOptions(String[] args)
+        //boolean parseCommand(String cmdstring)
 
         return Arrays.asList(new Object[][]{
 
-                //invalid configuration - empty options
-                {false, new String[1]},
+                //invalid configuration - empty arguments or command
+                {false, null},
+                {false, ""},
 
-                //invalid configurations - missing arguments
-                {false, new String[]{"-server"}},
-                {false, new String[]{"-timeout"}},
-                {false, new String[]{"-client-configuration"}},
+                //valid configurations? - somehow an empty argument is still valid
+                {true, "'' arguments"},
+                {true, "\"\" arguments"},
+                {true, "cmd ''"},
+                {true, "cmd \"\""},
 
                 //valid configurations
-                {true, new String[]{"-r"}},
-                {true, new String[]{"-r", "argument"}}, //technically correct even if this argument is ignored
-                {true, new String[]{"-server", "argument"}},
-                {true, new String[]{"-timeout", "argument"}},
-                {true, new String[]{"-client-configuration", "argument"}},
-
+                {true, "cmd arg1 arg2"},
+                {true, "cmd 'arg1' arg2"},
+                {true, "cmd arg1 \"arg2\""},
+                {true, "'cmd' arg1 arg2"},
+                {true, "\"cmd\" arg1 arg2"},
 
         });
     }
 
     @Test
-    public void parseOptionsTest(){
+    public void parseCommandTest(){
 
         ZooKeeperMain.MyCommandOptions optClass = new ZooKeeperMain.MyCommandOptions();
 
         boolean actResult;
 
         try {
-            actResult = optClass.parseOptions(args);
+            actResult = optClass.parseCommand(cmdstring);
         } catch (NullPointerException e) {
             Assert.assertFalse(expResult);
             return;
@@ -66,4 +67,6 @@ public class ZooKeeperMainParseOptionsTest {
         Assert.assertEquals(expResult, actResult);
 
     }
+
+
 }
