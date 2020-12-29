@@ -31,7 +31,7 @@ public class ZooKeeperMainParseCommandTest {
 
         return Arrays.asList(new Object[][]{
 
-                //invalid configuration - empty arguments or command
+                //invalid configuration
                 {false, null},
                 {false, ""},
 
