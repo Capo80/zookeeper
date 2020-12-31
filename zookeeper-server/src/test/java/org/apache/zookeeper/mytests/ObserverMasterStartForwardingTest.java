@@ -78,8 +78,8 @@ public class ObserverMasterStartForwardingTest {
 
                 //valid configurations
                 {0, validLh, 30, true},
-                {0, validLh, LAST_PKT_ID, true},
-                {0, validLh, LAST_PKT_ID+10, true},
+                {0, validLh, FIRST_PKT_ID-1, true},
+                {0, validLh, FIRST_PKT_ID+10, true},
         });
     }
 

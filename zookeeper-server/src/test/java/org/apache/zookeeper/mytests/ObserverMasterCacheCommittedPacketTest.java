@@ -12,10 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @RunWith(value = Parameterized.class)
@@ -36,7 +33,7 @@ public class ObserverMasterCacheCommittedPacketTest {
         //the arguments of the contructor are not used in the method we are testing
         //we can leave them as null
         obsM = new ObserverMaster(null, null, 80);
-
+        //System.setProperty("zookeeper.observerMaster.sizeLimit", "2000");
         this.expResult = expResult;
         this.qp = qp;
 
@@ -47,13 +44,15 @@ public class ObserverMasterCacheCommittedPacketTest {
         //add some dummy packets in the queue to check if they are removed correctly
         pktSizeLimit = Integer.getInteger("zookeeper.observerMaster.sizeLimit", 32 * 1024 * 1024);
 
-        QuorumPacket qp = new QuorumPacket(0, 1234, "dummy".getBytes(), null);
-
-        //fill half the queue
-        long pktNumber = (pktSizeLimit/2)/LearnerHandler.packetSize(qp);
-        for (int i = 0; i < pktNumber; i++) {
+        //System.out.println("askd: " + pktSizeLimit + " " + pktNumber);
+        long pktSize = 0;
+        while (pktSize < pktSizeLimit-300) {
+            QuorumPacket qp = new QuorumPacket(0, 1234, "d".getBytes(), null);
             obsM.cacheCommittedPacket(qp);
+            pktSize += LearnerHandler.packetSize(qp);
         }
+
+        //System.out.println("askd: " + (pktSize - pktSizeLimit));
 
     }
 
@@ -67,15 +66,13 @@ public class ObserverMasterCacheCommittedPacketTest {
         List<Id> dummyAuthInfo = new ArrayList<Id>();
         dummyAuthInfo.add(dummyId);
 
-        //filling the byte arrays with dummy data
-        byte[] almostOverSizedArray = new byte[(pktSizeLimit/2)-((int)(pktSizeLimit*0.15))];
-        byte[] overSizedArray = new byte[pktSizeLimit/2 + ((int)(pktSizeLimit*0.15))];
-        byte[] reallyOverSizedArray = new byte[pktSizeLimit*2];
-        Arrays.fill( almostOverSizedArray, (byte) 1 );
-        Arrays.fill( overSizedArray, (byte) 1 );
-        Arrays.fill( reallyOverSizedArray, (byte) 1 );
 
-        QuorumPacket undersizedPkt = new QuorumPacket(0, 1234, "dummy".getBytes(), dummyAuthInfo);
+        //filling the byte arrays with dummy data
+        byte[] almostOverSizedArray = new byte[299-28];
+        byte[] overSizedArray = new byte[350];
+        byte[] reallyOverSizedArray = new byte[6713523];
+
+        QuorumPacket undersizedPkt = new QuorumPacket(0, 1234, "dummyy".getBytes(), dummyAuthInfo);
         QuorumPacket almostOverSizedPkt = new QuorumPacket(0, 1234, almostOverSizedArray, dummyAuthInfo);
         QuorumPacket overSizedPkt = new QuorumPacket(0, 1234, overSizedArray, dummyAuthInfo);
         QuorumPacket reallyOverSizedPkt = new QuorumPacket(0, 1234, reallyOverSizedArray, dummyAuthInfo);
@@ -89,7 +86,7 @@ public class ObserverMasterCacheCommittedPacketTest {
                 {true, undersizedPkt},
                 {true, almostOverSizedPkt},
                 {true, overSizedPkt},
-                {false, reallyOverSizedPkt},
+                {true, reallyOverSizedPkt}
         });
 
     }
@@ -97,7 +94,7 @@ public class ObserverMasterCacheCommittedPacketTest {
     @Test
     public void cacheCommittedPacketTest() {
 
-        System.out.println("prima: " + qp);
+
         //call the test method
         try {
             obsM.cacheCommittedPacket(qp);
@@ -106,7 +103,6 @@ public class ObserverMasterCacheCommittedPacketTest {
             return;
         }
 
-        System.out.println("dopo: " + qp);
         //get the committed packet queue
         ConcurrentLinkedQueue<QuorumPacket> queue = obsM.getCommittedPkts();
 

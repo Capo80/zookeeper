@@ -379,6 +379,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
     public synchronized void cacheCommittedPacket(final QuorumPacket pkt) {
         committedPkts.add(pkt);
         pktsSize += LearnerHandler.packetSize(pkt);
+
         // remove 5 packets for every one added as we near the size limit
         for (int i = 0; pktsSize > pktsSizeLimit * 0.8 && i < 5; i++) {
             QuorumPacket oldPkt = committedPkts.poll();
@@ -388,6 +389,7 @@ public class ObserverMaster extends LearnerMaster implements Runnable {
             }
             pktsSize -= LearnerHandler.packetSize(oldPkt);
         }
+
         // enforce the size limit as a hard cap
         while (pktsSize > pktsSizeLimit) {
             QuorumPacket oldPkt = committedPkts.poll();

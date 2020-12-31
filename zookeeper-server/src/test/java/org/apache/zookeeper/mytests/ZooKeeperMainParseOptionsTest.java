@@ -41,10 +41,11 @@ public class ZooKeeperMainParseOptionsTest {
 
                 //valid configurations
                 {true, new String[]{"-r"}},
-                {true, new String[]{"-r", "argument"}}, //technically correct even if this argument is ignored
+                {true, new String[]{"-r", "cmd"}}, //correct - the argument can be after the option
                 {true, new String[]{"-server", "argument"}},
                 {true, new String[]{"-timeout", "argument"}},
                 {true, new String[]{"-client-configuration", "argument"}},
+                {true, new String[]{"cmd", "cdaArg", "-client-configuration", "argument"}},
 
 
         });
