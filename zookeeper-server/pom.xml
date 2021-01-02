@@ -165,10 +165,16 @@
       <artifactId>snappy-java</artifactId>
       <scope>provided</scope>
     </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-      </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.pitest</groupId>
+      <artifactId>pitest-maven</artifactId>
+      <version>1.6.2</version>
+      <type>maven-plugin</type>
+    </dependency>
   </dependencies>
 
   <build>
@@ -206,6 +212,27 @@
                 <source>${project.build.directory}/generated-sources/java</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.6.2</version>
+        <configuration>
+          <targetClasses>
+            <param>org.apache.zookeeper.ZooKeeperMain.MyCommandOptions</param>
+            <param>org.apache.zookeeper.server.quorum.ObserverMaster</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.apache.zookeeper.mytests.*Test</param>
+          </targetTests>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
