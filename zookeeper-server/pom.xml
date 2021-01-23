@@ -221,7 +221,7 @@
         <version>1.6.2</version>
         <configuration>
           <targetClasses>
-            <param>org.apache.zookeeper.ZooKeeperMain.MyCommandOptions</param>
+            <param>org.apache.zookeeper.MyCommandOptionsExt</param>
             <param>org.apache.zookeeper.server.quorum.ObserverMaster</param>
           </targetClasses>
           <targetTests>

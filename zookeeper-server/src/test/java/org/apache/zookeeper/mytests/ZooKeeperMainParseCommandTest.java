@@ -1,6 +1,7 @@
 package org.apache.zookeeper.mytests;
 
 
+import org.apache.zookeeper.MyCommandOptionsExt;
 import org.apache.zookeeper.ZooKeeperMain;
 import org.apache.zookeeper.common.X509Exception;
 import org.junit.Assert;
@@ -54,7 +55,7 @@ public class ZooKeeperMainParseCommandTest {
     @Test
     public void parseCommandTest(){
 
-        ZooKeeperMain.MyCommandOptions optClass = new ZooKeeperMain.MyCommandOptions();
+        MyCommandOptionsExt optClass = new MyCommandOptionsExt();
 
         boolean actResult;
 
